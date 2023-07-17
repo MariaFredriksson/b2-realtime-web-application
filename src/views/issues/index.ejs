@@ -1,0 +1,36 @@
+<h1>Issues</h1>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Code issue</th>
+      <th>Author</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% if (viewData?.issues?.length) { %>
+      <% for (const issue of viewData.issues) { %>
+        <tr>
+          <td class="w-100" id="issuetext-area">
+            <%= issue.issuetext %>
+          </td>
+          <td>
+            <%= issue.author %>
+          </td>
+          <td class="text-nowrap">
+            <% if (typeof user !== 'undefined' && user === issue.author) { %>
+              <a class="btn btn-secondary" href="./issues/<%= issue.id %>/update" role="button">Update</a>
+              <a class="btn btn-secondary" href="./issues/<%= issue.id %>/delete" role="button">Delete</a>
+            <% } %>
+          </td>
+        </tr>
+      <% } %>
+    <% } else { %>
+      <tr>
+        <td colspan="3" class="text-center text-danger">
+          There are no issues to display
+        </td>
+      </tr>
+    <% } %>
+  </tbody>
+</table>

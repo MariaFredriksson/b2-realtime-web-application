@@ -74,8 +74,8 @@ try {
 
   // Parse requests of the content type application/x-www-form-urlencoded.
   // Populates the request object with a body object (req.body).
-  // Takes the input from the user (the snippet) that is sent to the server in a special format (application/x-www-form-urlencoded), and puts the data into req.body as an object with key value pairs
-  // Takes the inputted snippet from the user and makes it available in the application
+  // Takes the input from the user (the issue) that is sent to the server in a special format (application/x-www-form-urlencoded), and puts the data into req.body as an object with key value pairs
+  // Takes the inputted issue from the user and makes it available in the application
   // extended:false is about which library this middleware should use
   expressApp.use(express.urlencoded({ extended: false }))
 

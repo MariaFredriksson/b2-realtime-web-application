@@ -106,6 +106,6 @@ code {
   font-family: 'Consolas', 'Courier New', Courier, monospace
 }
 
-#snippettext-area {
+#issuetext-area {
   white-space: pre-wrap;
 }

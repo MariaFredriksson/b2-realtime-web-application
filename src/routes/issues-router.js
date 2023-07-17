@@ -1,17 +1,17 @@
 /**
- * Snippets routes.
+ * Issues routes.
  *
  * @author Maria Fredriksson
  * @version 1.0.0
  */
 
 import express from 'express'
-import { SnippetsController } from '../controllers/snippets-controller.js'
+import { IssuesController } from '../controllers/issues-controller.js'
 import { AuthorizationController } from '../controllers/authorization-controller.js'
 
 export const router = express.Router()
 
-const controller = new SnippetsController()
+const controller = new IssuesController()
 const authorizationController = new AuthorizationController()
 
 // Map HTTP verbs and route paths to controller action methods.
