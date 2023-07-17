@@ -1,7 +1,7 @@
 {
-  "name": "assignment-b1-crud-snippets",
+  "name": "assignment-b2--realtime-web-application",
   "version": "1.0.0",
-  "description": "1DV026 - Assignment - CRUD snippets",
+  "description": "1DV026 - Assignment B2 - Realtime Web Application",
   "type": "module",
   "main": "src/server.js",
   "scripts": {
@@ -22,7 +22,6 @@
     "express-ejs-layouts": "^2.5.1",
     "express-session": "^1.17.3",
     "helmet": "^6.0.1",
-    "mongoose": "^6.7.0",
     "morgan": "^1.10.0"
   },
   "devDependencies": {
