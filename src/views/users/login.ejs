@@ -1,0 +1,31 @@
+<h1>Log in</h1>
+<form class="row g-3" method="post" action="./users/login">
+  <div class="col-auto">
+    <label class="form-label" for="usernameInput">
+      Username
+    </label>
+    <input type="text" class="form-control" id="usernameInput" name="username"
+      placeholder="Enter your username here" required="required" autofocus="autofocus" />
+  </div>
+  <div class="col-auto">
+    <label class="form-label" for="passwordInput">
+      Password
+    </label>
+    <input type="password" class="form-control" id="passwordInput" name="password" placeholder="Enter your password here"
+      required="required" />
+  </div>
+  <div class="col-auto">
+    <button type="submit" class="btn btn-primary">Log in</button>
+  </div>
+</form>
+<div>
+  <p>
+    <br>
+    <br>
+    <br>
+    If you don't have an account:
+  </p>
+  <a class="btn btn-secondary" href="./users/create" role="button">
+    Create account
+  </a>
+</div>
