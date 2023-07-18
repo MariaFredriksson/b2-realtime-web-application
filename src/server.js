@@ -15,12 +15,29 @@ import { router } from './routes/router.js'
 import { connectDB } from './config/mongoose.js'
 import helmet from 'helmet'
 
+// Websocket support with Socket.io
+import { Server } from 'socket.io'
+import { createServer } from 'node:http'
+
 try {
   // Connect to MongoDB.
   await connectDB()
 
   // Creates an Express application.
   const expressApp = express()
+
+  // Socket.IO: Create an HTTP server and pass it to Socket.IO.
+  const httpServer = createServer(expressApp)
+  const io = new Server(httpServer)
+
+  // Log when a user connects/disconnects.
+  io.on('connection', (socket) => {
+    console.log('socket.io: a user connected')
+
+    socket.on('disconnect', () => {
+      console.log('socket.io: a user disconnected')
+    })
+  })
 
   expressApp.use(helmet())
 
@@ -131,6 +148,9 @@ try {
     // Pass the base URL to the views.
     res.locals.baseURL = baseURL
 
+    // Add the io object to the response object to make it available in controllers.
+    res.io = io
+
     // This middleware function is done, so therefore it passes control to the next middleware or route in the chain that express has specified
     next()
   })
@@ -176,7 +196,8 @@ try {
 
   // Starts the HTTP server listening for connections.
   // This line of code starts the web server and makes it listen on the specified port, so that it can start processing incoming requests and sending back responses. This is the final step in the process of setting up the server and starting the application.
-  expressApp.listen(process.env.PORT, () => {
+  // Call .listen on the server and not on the expressApp, when using socket.io
+  httpServer.listen(process.env.PORT, () => {
     console.log(`Server running at http://localhost:${process.env.PORT}`)
     console.log('Press Ctrl-C to terminate...')
   })
