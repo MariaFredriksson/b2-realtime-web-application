@@ -39,11 +39,24 @@ export class SnippetsController {
       const issues = await response.json()
       console.log(issues)
 
+      // Extract the desired information from each issue
+      const extractedIssues = issues.map(issue => ({
+        title: issue.title,
+        description: issue.description,
+        id: issue.id,
+        state: issue.state,
+        ownerAvatar: issue.author.avatar_url
+      }))
+
+      console.log(extractedIssues)
+
       const viewData = {
         // Uses the mongoose method find() to get all the snippets from the database
         // Then uses map to take what is returned and turn it into an array of objects in plain javascript
-        snippets: (await Snippet.find())
-          .map(snippet => snippet.toObject())
+        // snippets: (await Snippet.find())
+        //   .map(snippet => snippet.toObject())
+
+        issues: extractedIssues
       }
 
       // Tells which file (with sort of html code) to show to the user, and also sends the snippets - the viewData which is the array objects just created - so the snippets also can be shown to the user

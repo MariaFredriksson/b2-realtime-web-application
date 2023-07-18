@@ -1,36 +1,43 @@
-<h1>Snippets</h1>
+<h1>Issues</h1>
 <table class="table table-striped">
   <thead>
     <tr>
-      <th>Code snippet</th>
-      <th>Author</th>
-      <th>Action</th>
+      <th>Title</th>
+      <th>Description</th>
+      <th>ID</th>
+      <th>State</th>
+      <th>Owner Avatar</th>
     </tr>
   </thead>
   <tbody>
-    <% if (viewData?.snippets?.length) { %>
-      <% for (const snippet of viewData.snippets) { %>
+    <% if (viewData?.issues?.length) { %>
+      <% for (const issue of viewData.issues) { %>
         <tr>
-          <td class="w-100" id="snippettext-area">
-            <%= snippet.snippettext %>
+          <td>
+            <%= issue.title %>
           </td>
           <td>
-            <%= snippet.author %>
+            <%= issue.description %>
           </td>
-          <td class="text-nowrap">
-            <% if (typeof user !== 'undefined' && user === snippet.author) { %>
-              <a class="btn btn-secondary" href="./snippets/<%= snippet.id %>/update" role="button">Update</a>
-              <a class="btn btn-secondary" href="./snippets/<%= snippet.id %>/delete" role="button">Delete</a>
-            <% } %>
+          <td>
+            <%= issue.id %>
+          </td>
+          <td>
+            <%= issue.state %>
+          </td>
+          <td>
+            <% if (issue.ownerAvatar) { %>
+              <img src="<%= issue.ownerAvatar %>" alt="Owner Avatar" width="40" height="40">
+              <% } %>
           </td>
         </tr>
-      <% } %>
-    <% } else { %>
-      <tr>
-        <td colspan="3" class="text-center text-danger">
-          There are no snippets to display
-        </td>
-      </tr>
-    <% } %>
+        <% } %>
+          <% } else { %>
+            <tr>
+              <td colspan="5" class="text-center text-danger">
+                There are no issues to display
+              </td>
+            </tr>
+            <% } %>
   </tbody>
 </table>
