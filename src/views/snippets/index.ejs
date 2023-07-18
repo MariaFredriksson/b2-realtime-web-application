@@ -2,11 +2,11 @@
 <table class="table table-striped">
   <thead>
     <tr>
+      <th>Owner Avatar</th>
       <th>Title</th>
       <th>Description</th>
-      <th>ID</th>
       <th>State</th>
-      <th>Owner Avatar</th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
@@ -14,21 +14,27 @@
       <% for (const issue of viewData.issues) { %>
         <tr>
           <td>
+            <% if (issue.ownerAvatar) { %>
+              <img src="<%= issue.ownerAvatar %>" alt="Owner Avatar" width="40" height="40">
+              <% } %>
+          </td>
+          <td>
             <%= issue.title %>
           </td>
           <td>
             <%= issue.description %>
           </td>
           <td>
-            <%= issue.id %>
-          </td>
-          <td>
             <%= issue.state %>
           </td>
           <td>
-            <% if (issue.ownerAvatar) { %>
-              <img src="<%= issue.ownerAvatar %>" alt="Owner Avatar" width="40" height="40">
-              <% } %>
+            <% if (issue.state==='opened' ) { %>
+              <form action="/snippets/<%= issue.iid %>/close" method="POST">
+                <button type="submit" class="btn btn-primary">Close issue</button>
+              </form>
+              <% } else { %>
+                <button type="button" class="btn btn-secondary" disabled>Closed</button>
+                <% } %>
           </td>
         </tr>
         <% } %>
