@@ -1,0 +1,14 @@
+<h1>Update snippet</h1>
+<form class="row g-3" method="post" action="./snippets/<%= viewData?.id %>/update">
+  <div class="col-md-12">
+    <label class="form-label" for="snippetTextarea">
+      Snippet
+    </label>
+    <textarea type="text" class="form-control" id="snippetTextarea" name="snippettext"
+      placeholder="Update snippet here" required="required" rows="10"
+      autofocus="autofocus"><%= viewData?.snippettext %></textarea>
+  </div>
+  <div class="col-12">
+    <button type="submit" class="btn btn-primary">Update</button>
+  </div>
+</form>

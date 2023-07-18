@@ -12,28 +12,15 @@ import logger from 'morgan'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { router } from './routes/router.js'
+import { connectDB } from './config/mongoose.js'
 import helmet from 'helmet'
 
-// Websocket support with Socket.io
-import { Server } from 'socket.io'
-import { createServer } from 'node:http'
-
 try {
+  // Connect to MongoDB.
+  await connectDB()
+
   // Creates an Express application.
   const expressApp = express()
-
-  // Socket.IO: Create an HTTP server and pass it to Socket.IO.
-  const httpServer = createServer(expressApp)
-  const io = new Server(httpServer)
-
-  // Log when a user connects/disconnects.
-  io.on('connection', (socket) => {
-    console.log('socket.io: a user connected')
-
-    socket.on('disconnect', () => {
-      console.log('socket.io: a user disconnected')
-    })
-  })
 
   expressApp.use(helmet())
 
@@ -74,8 +61,8 @@ try {
 
   // Parse requests of the content type application/x-www-form-urlencoded.
   // Populates the request object with a body object (req.body).
-  // Takes the input from the user (the issue) that is sent to the server in a special format (application/x-www-form-urlencoded), and puts the data into req.body as an object with key value pairs
-  // Takes the inputted issue from the user and makes it available in the application
+  // Takes the input from the user (the snippet) that is sent to the server in a special format (application/x-www-form-urlencoded), and puts the data into req.body as an object with key value pairs
+  // Takes the inputted snippet from the user and makes it available in the application
   // extended:false is about which library this middleware should use
   expressApp.use(express.urlencoded({ extended: false }))
 
@@ -131,9 +118,6 @@ try {
     // Pass the base URL to the views.
     res.locals.baseURL = baseURL
 
-    // Add the io object to the response object to make it available in controllers.
-    res.io = io
-
     // This middleware function is done, so therefore it passes control to the next middleware or route in the chain that express has specified
     next()
   })
@@ -179,8 +163,7 @@ try {
 
   // Starts the HTTP server listening for connections.
   // This line of code starts the web server and makes it listen on the specified port, so that it can start processing incoming requests and sending back responses. This is the final step in the process of setting up the server and starting the application.
-  // Call .listen on the server and not on the expressApp, when using socket.io
-  httpServer.listen(process.env.PORT, () => {
+  expressApp.listen(process.env.PORT, () => {
     console.log(`Server running at http://localhost:${process.env.PORT}`)
     console.log('Press Ctrl-C to terminate...')
   })
