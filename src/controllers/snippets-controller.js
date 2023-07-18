@@ -21,7 +21,24 @@ export class SnippetsController {
    */
   // This method is called when the url ends with just '/snippets'
   async index (req, res, next) {
+    const token = process.env.PRIVATE_TOKEN
+    const projectID = process.env.PROJECT_ID
+    const apiUrl = `https://gitlab.lnu.se/api/v4/projects/${projectID}/issues`
+
     try {
+      const response = await fetch(apiUrl, {
+        headers: {
+          'PRIVATE-TOKEN': token
+        }
+      })
+
+      if (!response.ok) {
+        throw new Error(`Request failed with status ${response.status}`)
+      }
+
+      const issues = await response.json()
+      console.log(issues)
+
       const viewData = {
         // Uses the mongoose method find() to get all the snippets from the database
         // Then uses map to take what is returned and turn it into an array of objects in plain javascript
