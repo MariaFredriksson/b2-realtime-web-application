@@ -12,6 +12,8 @@ import { Snippet } from '../models/snippet.js'
  */
 // Class with different methods, where each method hanlde a http requests that comes though a route
 export class SnippetsController {
+  #issues = []
+
   /**
    * Displays a list of snippets.
    *
@@ -36,11 +38,11 @@ export class SnippetsController {
         throw new Error(`Request failed with status ${response.status}`)
       }
 
-      const issues = await response.json()
-      console.log(issues)
+      const issuesJson = await response.json()
+      // console.log(issues)
 
       // Extract the desired information from each issue
-      const extractedIssues = issues.map(issue => ({
+      const extractedIssues = issuesJson.map(issue => ({
         title: issue.title,
         description: issue.description,
         id: issue.id,
@@ -48,6 +50,8 @@ export class SnippetsController {
         state: issue.state,
         ownerAvatar: issue.author.avatar_url
       }))
+
+      this.#issues = extractedIssues
 
       console.log(extractedIssues)
 
@@ -80,6 +84,9 @@ export class SnippetsController {
     const issueIid = req.params.iid
     const apiUrl = `https://gitlab.lnu.se/api/v4/projects/${projectID}/issues/${issueIid}`
 
+    // Get the issue with this iid from the issues array
+    // const issue = this.#issues.find(issue => issue.iid === issueIid)
+
     try {
       const response = await fetch(apiUrl, {
         method: 'PUT',
@@ -95,6 +102,8 @@ export class SnippetsController {
       }
 
       console.log('Issue closed successfully.')
+
+      res.io.emit('snippet/close', issueIid)
 
       // const snippet = await Snippet.findById(req.params.id)
 
@@ -151,6 +160,8 @@ export class SnippetsController {
       }
 
       console.log('Issue closed successfully.')
+
+      res.io.emit('snippet/open', issueIid)
 
       // const snippet = await Snippet.findById(req.params.id)
 

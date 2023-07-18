@@ -9,10 +9,10 @@
       <th></th>
     </tr>
   </thead>
-  <tbody>
+  <tbody id="issue-list">
     <% if (viewData?.issues?.length) { %>
       <% for (const issue of viewData.issues) { %>
-        <tr>
+        <tr data-id="<%= issue.iid %>">
           <td>
             <% if (issue.ownerAvatar) { %>
               <img src="<%= issue.ownerAvatar %>" alt="Owner Avatar" width="40" height="40">
@@ -24,10 +24,10 @@
           <td>
             <%= issue.description %>
           </td>
-          <td>
+          <td class="state-column">
             <%= issue.state %>
           </td>
-          <td>
+          <td class="state-btn-column">
             <% if (issue.state==='opened' ) { %>
               <form action="/snippets/<%= issue.iid %>/close" method="POST">
                 <button type="submit" class="btn btn-primary">Close issue</button>
