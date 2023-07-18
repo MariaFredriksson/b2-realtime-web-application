@@ -33,8 +33,10 @@
                 <button type="submit" class="btn btn-primary">Close issue</button>
               </form>
               <% } else { %>
-                <button type="button" class="btn btn-secondary" disabled>Closed</button>
-                <% } %>
+                <form action="/snippets/<%= issue.iid %>/open" method="POST">
+                  <button type="submit" class="btn btn-secondary">Open issue</button>
+                </form>
+              <% } %>
           </td>
         </tr>
         <% } %>

@@ -124,6 +124,62 @@ export class SnippetsController {
   }
 
   /**
+   * Updates a specific snippet.
+   *
+   * @param {object} req - Express request object.
+   * @param {object} res - Express response object.
+   */
+  async openPost (req, res) {
+    // TODO: Make this not copied
+    const token = process.env.PRIVATE_TOKEN
+    const projectID = process.env.PROJECT_ID
+    const issueIid = req.params.iid
+    const apiUrl = `https://gitlab.lnu.se/api/v4/projects/${projectID}/issues/${issueIid}`
+
+    try {
+      const response = await fetch(apiUrl, {
+        method: 'PUT',
+        headers: {
+          'PRIVATE-TOKEN': token,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ state_event: 'reopen' })
+      })
+
+      if (!response.ok) {
+        throw new Error(`Request failed with status ${response.status}`)
+      }
+
+      console.log('Issue closed successfully.')
+
+      // const snippet = await Snippet.findById(req.params.id)
+
+      // if (snippet) {
+      //   snippet.snippettext = req.body.snippettext
+
+      //   await snippet.save()
+
+      //   req.session.flash = { type: 'success', text: 'The snippet was updated successfully.' }
+      // } else {
+      //   req.session.flash = {
+      //     type: 'danger',
+      //     text: 'The snippet you attempted to update was removed by another user after you got the original values.'
+      //   }
+      // }
+      // res.redirect('..')
+
+      // Redirect back to the original page
+      res.redirect('/snippets')
+    } catch (error) {
+      if (error.message.includes('is longer than the maximum allowed length (1000)')) {
+        error.message = 'The snippet is longer than the maximum allowed length (1000).'
+      }
+      req.session.flash = { type: 'danger', text: error.message }
+      res.redirect('./update')
+    }
+  }
+
+  /**
    * Returns a HTML form for creating a new snippet.
    *
    * @param {object} req - Express request object.
