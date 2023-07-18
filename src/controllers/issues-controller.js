@@ -19,18 +19,36 @@ export class IssuesController {
    */
   // This method is called when the url ends with just '/issues'
   async index (req, res, next) {
+    const token = process.env.PRIVATE_TOKEN
+    const projectID = process.env.PROJECT_ID
+    const apiUrl = `https://gitlab.lnu.se/api/v4/projects/${projectID}/issues`
+
     try {
-      const viewData = {
-        // Uses the mongoose method find() to get all the issues from the database
-        // Then uses map to take what is returned and turn it into an array of objects in plain javascript
-        // issues: (await issue.find())
-        //   .map(issue => issue.toObject())
+      const response = await fetch(apiUrl, {
+        headers: {
+          'PRIVATE-TOKEN': token
+        }
+      })
+
+      if (!response.ok) {
+        throw new Error(`Request failed with status ${response.status}`)
       }
 
+      const issues = await response.json()
+      console.log(issues)
+
+      // const viewData = {
+      //   // Uses the mongoose method find() to get all the issues from the database
+      //   // Then uses map to take what is returned and turn it into an array of objects in plain javascript
+      //   // issues: (await issue.find())
+      //   //   .map(issue => issue.toObject())
+      // }
+
       // Tells which file (with sort of html code) to show to the user, and also sends the issues - the viewData which is the array objects just created - so the issues also can be shown to the user
-      res.render('issues/index', { viewData })
+      // res.render('issues/index', { viewData })
     } catch (error) {
-      next(error)
+      // next(error)
+      console.error(error)
     }
   }
 
@@ -111,6 +129,10 @@ export class IssuesController {
       //   // issue.issuetext = req.body.issuetext
 
       //   // await issue.save()
+
+      // TODO
+      // Send the updated issue to all subscribers
+      // res.io.emit('issues/update', issue.toObject())
 
       //   req.session.flash = { type: 'success', text: 'The issue was updated successfully.' }
       // } else {

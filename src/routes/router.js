@@ -8,13 +8,13 @@
 import express from 'express'
 import { router as homeRouter } from './home-router.js'
 import { router as issuesRouter } from './issues-router.js'
-import { router as usersRouter } from './users-router.js'
+// import { router as usersRouter } from './users-router.js'
 
 export const router = express.Router()
 
 router.use('/', homeRouter)
 router.use('/issues', issuesRouter)
-router.use('/users', usersRouter)
+// router.use('/users', usersRouter)
 
 // If any url is requested that doesn't match the above, there will be an error
 router.use('*', (req, res, next) => {
