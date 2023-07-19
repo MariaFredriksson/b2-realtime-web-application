@@ -96,6 +96,10 @@ try {
   // extended:false is about which library this middleware should use
   expressApp.use(express.urlencoded({ extended: false }))
 
+  // Webhook: Parse incoming requests with JSON payloads (application/json).
+  // Populates the request object with a body object (req.body).
+  expressApp.use(express.json())
+
   // Serve static files.
   // Tell express where to look for files that always should be used on the site, like the css file now (could be images, js-files etc otherwise also)
   expressApp.use(express.static(join(directoryFullName, '..', 'public')))
@@ -163,6 +167,13 @@ try {
   // Error handler.
   // Good that this is placed at the end of the middleware chain, so this handler can take care of the errors that are not caught in the other middlewares of routes
   expressApp.use(function (err, req, res, next) {
+    // Webhook: If it is a webhook request just send the status code and the message as plain text.
+    if (req.originalUrl.includes('/webhooks')) {
+      return res
+        .status(err.status || 500)
+        .end(err.message)
+    }
+
     // 404 Not Found.
     if (err.status === 404) {
       return res

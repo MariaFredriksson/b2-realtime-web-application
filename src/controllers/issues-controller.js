@@ -99,7 +99,8 @@ export class IssuesController {
 
       req.session.flash = { type: 'success', text: `Issue #${issueIid} was closed successfully.` }
 
-      res.io.emit('issues/close', issueIid)
+      // Don't have this here, since it is called when the GitLab api has been called, and then there is a hook that says that everything is ok, and then this is emitted from there
+      // res.io.emit('issues/close', issueIid)
 
       // Redirect back to the original page
       res.redirect('/issues')
@@ -129,7 +130,8 @@ export class IssuesController {
 
       req.session.flash = { type: 'success', text: `Issue #${issueIid} was opened successfully.` }
 
-      res.io.emit('issues/open', issueIid)
+      // Don't have this here, since it is called when the GitLab api has been called, and then there is a hook that says that everything is ok, and then this is emitted from there
+      // res.io.emit('issues/open', issueIid)
 
       // Redirect back to the original page
       res.redirect('/issues')
