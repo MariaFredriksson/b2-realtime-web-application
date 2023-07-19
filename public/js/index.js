@@ -7,11 +7,11 @@ if (issueList) {
   // Create a socket connection using Socket.IO.
   const socket = window.io()
 
-  // Listen for "snippet/close" message from the server.
-  socket.on('snippet/close', (issueIid) => changeIssueState('closed', issueIid))
+  // Listen for "issues/close" message from the server.
+  socket.on('issues/close', (issueIid) => changeIssueState('closed', issueIid))
 
-  // Listen for "snippet/open" message from the server.
-  socket.on('snippet/open', (issueIid) => changeIssueState('opened', issueIid))
+  // Listen for "issues/open" message from the server.
+  socket.on('issues/open', (issueIid) => changeIssueState('opened', issueIid))
 }
 
 /**
@@ -41,7 +41,7 @@ function changeIssueState (newState, issueIid) {
 
     if (newState === 'closed') {
       // Change the form action
-      form.action = `/snippets/${issueIid}/open`
+      form.action = `/issues/${issueIid}/open`
 
       // Change the button text and class
       button.textContent = 'Open issue'
@@ -49,7 +49,7 @@ function changeIssueState (newState, issueIid) {
       button.classList.add('btn-secondary', 'btn-closed')
     } else {
       // Change the form action
-      form.action = `/snippets/${issueIid}/close`
+      form.action = `/issues/${issueIid}/close`
 
       // Change the button text and class
       button.textContent = 'Close issue'

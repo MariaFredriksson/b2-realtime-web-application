@@ -29,11 +29,11 @@
           </td>
           <td class="state-btn-column">
             <% if (issue.state==='opened' ) { %>
-              <form action="/snippets/<%= issue.iid %>/close" method="POST">
+              <form action="/issues/<%= issue.iid %>/close" method="POST">
                 <button type="submit" class="btn btn-primary btn-opened">Close issue</button>
               </form>
               <% } else { %>
-                <form action="/snippets/<%= issue.iid %>/open" method="POST">
+                <form action="/issues/<%= issue.iid %>/open" method="POST">
                   <button type="submit" class="btn btn-secondary btn-closed">Open issue</button>
                 </form>
               <% } %>

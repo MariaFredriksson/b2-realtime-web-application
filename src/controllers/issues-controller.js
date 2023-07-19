@@ -1,5 +1,5 @@
 /**
- * Module for the SnippetsController.
+ * Module for the IssuesController.
  *
  * @author Maria Fredriksson
  * @version 1.0.0
@@ -10,8 +10,8 @@ import { Snippet } from '../models/snippet.js'
 /**
  * Encapsulates a controller.
  */
-// Class with different methods, where each method hanlde a http requests that comes though a route
-export class SnippetsController {
+// Class with different methods, where each method handle a http requests that comes though a route
+export class IssuesController {
   #issues = []
 
   /**
@@ -65,7 +65,7 @@ export class SnippetsController {
       }
 
       // Tells which file (with sort of html code) to show to the user, and also sends the snippets - the viewData which is the array objects just created - so the snippets also can be shown to the user
-      res.render('snippets/index', { viewData })
+      res.render('issues/index', { viewData })
     } catch (error) {
       next(error)
     }
@@ -103,7 +103,7 @@ export class SnippetsController {
 
       console.log('Issue closed successfully.')
 
-      res.io.emit('snippet/close', issueIid)
+      res.io.emit('issues/close', issueIid)
 
       // const snippet = await Snippet.findById(req.params.id)
 
@@ -122,7 +122,7 @@ export class SnippetsController {
       // res.redirect('..')
 
       // Redirect back to the original page
-      res.redirect('/snippets')
+      res.redirect('/issues')
     } catch (error) {
       if (error.message.includes('is longer than the maximum allowed length (1000)')) {
         error.message = 'The snippet is longer than the maximum allowed length (1000).'
@@ -161,7 +161,7 @@ export class SnippetsController {
 
       console.log('Issue closed successfully.')
 
-      res.io.emit('snippet/open', issueIid)
+      res.io.emit('issues/open', issueIid)
 
       // const snippet = await Snippet.findById(req.params.id)
 
@@ -180,7 +180,7 @@ export class SnippetsController {
       // res.redirect('..')
 
       // Redirect back to the original page
-      res.redirect('/snippets')
+      res.redirect('/issues')
     } catch (error) {
       if (error.message.includes('is longer than the maximum allowed length (1000)')) {
         error.message = 'The snippet is longer than the maximum allowed length (1000).'
