@@ -10,7 +10,26 @@
  */
 // Class with different methods, where each method handle a http requests that comes though a route
 export class IssuesController {
-  #issues = []
+  /**
+   * The private token.
+   *
+   * @type {string}
+   */
+  #token = process.env.PRIVATE_TOKEN
+
+  /**
+   * The project ID.
+   *
+   * @type {string}
+   */
+  #projectID = process.env.PROJECT_ID
+
+  /**
+   * The API URL.
+   *
+   * @type {string}
+   */
+  #apiUrl = `https://gitlab.lnu.se/api/v4/projects/${this.#projectID}/issues`
 
   /**
    * Displays a list of snippets.
@@ -20,23 +39,18 @@ export class IssuesController {
    * @param {Function} next - Express next middleware function.
    */
   async index (req, res, next) {
-    const token = process.env.PRIVATE_TOKEN
-    const projectID = process.env.PROJECT_ID
-    const apiUrl = `https://gitlab.lnu.se/api/v4/projects/${projectID}/issues`
-
     try {
-      const response = await fetch(apiUrl, {
+      const response = await fetch(this.#apiUrl, {
         headers: {
-          'PRIVATE-TOKEN': token
+          'PRIVATE-TOKEN': this.#token
         }
       })
 
       if (!response.ok) {
-        throw new Error(`Request failed with status ${response.status}`)
+        throw new Error(`The issues could not be fetched. Please try again later. Status: ${response.status}`)
       }
 
       const issuesJson = await response.json()
-      // console.log(issues)
 
       // Extract the desired information from each issue
       const extractedIssues = issuesJson.map(issue => ({
@@ -47,8 +61,6 @@ export class IssuesController {
         state: issue.state,
         ownerAvatar: issue.author.avatar_url
       }))
-
-      this.#issues = extractedIssues
 
       // console.log(extractedIssues)
 
@@ -71,21 +83,18 @@ export class IssuesController {
    */
   // This is an arrow function so that the 'this' keyword is automatically inherited from the class
   closePost = async (req, res) => {
-    // TODO: Make this not copied
-    const token = process.env.PRIVATE_TOKEN
-    const projectID = process.env.PROJECT_ID
     const issueIid = req.params.iid
-    const apiUrl = `https://gitlab.lnu.se/api/v4/projects/${projectID}/issues/${issueIid}`
+    const apiUrlClose = `${this.#apiUrl}/${issueIid}`
 
     // Get the issue with this iid from the issues array
     // const issue = this.#issues.find(issue => issue.iid === issueIid)
 
     try {
-      const response = await this.#fetchOpenCloseIssues(token, apiUrl, 'close')
+      const response = await this.#fetchOpenCloseIssues(this.#token, apiUrlClose, 'close')
 
       if (!response.ok) {
         // Throw an error with an error message
-        throw new Error(`The issue could not be closed. Please try again later. ${response.status}`)
+        throw new Error(`The issue could not be closed. Please try again later. Status: ${response.status}`)
       }
 
       req.session.flash = { type: 'success', text: `Issue #${issueIid} was closed successfully.` }
@@ -107,18 +116,15 @@ export class IssuesController {
    * @param {object} res - Express response object.
    */
   openPost = async (req, res) => {
-    // TODO: Make this not copied
-    const token = process.env.PRIVATE_TOKEN
-    const projectID = process.env.PROJECT_ID
     const issueIid = req.params.iid
-    const apiUrl = `https://gitlab.lnu.se/api/v4/projects/${projectID}/issues/${issueIid}`
+    const apiUrlOpen = `${this.#apiUrl}/${issueIid}`
 
     try {
-      const response = await this.#fetchOpenCloseIssues(token, apiUrl, 'reopen')
+      const response = await this.#fetchOpenCloseIssues(this.#token, apiUrlOpen, 'reopen')
 
       if (!response.ok) {
         // Throw an error with an error message
-        throw new Error(`The issue could not be opened. Please try again later. ${response.status}`)
+        throw new Error(`The issue could not be opened. Please try again later. Status: ${response.status}`)
       }
 
       req.session.flash = { type: 'success', text: `Issue #${issueIid} was opened successfully.` }
@@ -153,7 +159,6 @@ export class IssuesController {
       body: JSON.stringify({ state_event: action })
     })
 
-    console.log(response)
     return response
   }
 }
