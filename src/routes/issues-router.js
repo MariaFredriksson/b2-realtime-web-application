@@ -18,6 +18,10 @@ const authorizationController = new AuthorizationController()
 
 router.get('/', (req, res, next) => controller.index(req, res, next))
 
+router.post('/:iid/close', controller.closePost)
+
+router.post('/:iid/open', controller.openPost)
+
 router.get('/create', authorizationController.userLoggedIn, controller.create)
 router.post('/create', authorizationController.userLoggedIn, controller.createPost)
 

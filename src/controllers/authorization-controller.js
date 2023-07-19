@@ -5,6 +5,8 @@
  * @version 1.0.0
  */
 
+import { Snippet } from '../models/snippet.js'
+
 /**
  * Encapsulates a controller.
  */
@@ -15,6 +17,7 @@ export class AuthorizationController {
    * @param {object} req - Express request object.
    * @param {object} res - Express response object.
    * @param {Function} next - Express next middleware function.
+   *
    * @returns {undefined}
    */
   userLoggedIn (req, res, next) {
@@ -35,6 +38,7 @@ export class AuthorizationController {
    * @param {object} req - Express request object.
    * @param {object} res - Express response object.
    * @param {Function} next - Express next middleware function.
+   *
    * @returns {undefined}
    */
   userNOTLoggedIn (req, res, next) {
@@ -55,18 +59,19 @@ export class AuthorizationController {
    * @param {object} req - Express request object.
    * @param {object} res - Express response object.
    * @param {Function} next - Express next middleware function.
+   *
    * @returns {undefined}
    */
   async userIsAuthor (req, res, next) {
     try {
-      // const issue = await issue.findById(req.params.id)
+      const snippet = await Snippet.findById(req.params.id)
 
       // If the user is not the author
-      // if (req.session.user !== issue.author) {
-      //   const error = new Error('Forbidden')
-      //   error.status = 403
-      //   return next(error)
-      // }
+      if (req.session.user !== snippet.author) {
+        const error = new Error('Forbidden')
+        error.status = 403
+        return next(error)
+      }
       next()
     } catch (error) {
       next(error)

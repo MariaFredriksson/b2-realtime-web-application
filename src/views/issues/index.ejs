@@ -2,35 +2,50 @@
 <table class="table table-striped">
   <thead>
     <tr>
-      <th>Code issue</th>
-      <th>Author</th>
-      <th>Action</th>
+      <th>Owner Avatar</th>
+      <th>Title</th>
+      <th>Description</th>
+      <th>State</th>
+      <th></th>
     </tr>
   </thead>
-  <tbody>
+  <tbody id="issue-list">
     <% if (viewData?.issues?.length) { %>
       <% for (const issue of viewData.issues) { %>
-        <tr>
-          <td class="w-100" id="issuetext-area">
-            <%= issue.issuetext %>
+        <tr data-id="<%= issue.iid %>">
+          <td>
+            <% if (issue.ownerAvatar) { %>
+              <img src="<%= issue.ownerAvatar %>" alt="Owner Avatar" width="40" height="40">
+              <% } %>
           </td>
           <td>
-            <%= issue.author %>
+            <%= issue.title %>
           </td>
-          <td class="text-nowrap">
-            <% if (typeof user !== 'undefined' && user === issue.author) { %>
-              <a class="btn btn-secondary" href="./issues/<%= issue.id %>/update" role="button">Update</a>
-              <a class="btn btn-secondary" href="./issues/<%= issue.id %>/delete" role="button">Delete</a>
-            <% } %>
+          <td>
+            <%= issue.description %>
+          </td>
+          <td class="state-column">
+            <%= issue.state %>
+          </td>
+          <td class="state-btn-column">
+            <% if (issue.state==='opened' ) { %>
+              <form action="/issues/<%= issue.iid %>/close" method="POST">
+                <button type="submit" class="btn btn-primary btn-opened">Close issue</button>
+              </form>
+              <% } else { %>
+                <form action="/issues/<%= issue.iid %>/open" method="POST">
+                  <button type="submit" class="btn btn-secondary btn-closed">Open issue</button>
+                </form>
+              <% } %>
           </td>
         </tr>
-      <% } %>
-    <% } else { %>
-      <tr>
-        <td colspan="3" class="text-center text-danger">
-          There are no issues to display
-        </td>
-      </tr>
-    <% } %>
+        <% } %>
+          <% } else { %>
+            <tr>
+              <td colspan="5" class="text-center text-danger">
+                There are no issues to display
+              </td>
+            </tr>
+            <% } %>
   </tbody>
 </table>

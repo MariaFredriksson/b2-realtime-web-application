@@ -2,12 +2,12 @@
 <div class="jumbotron">
   <div class="container">
     <h1 class="display-3">
-      B1 - CRUD
+      B2 - Realtime Web Application
     </h1>
     <br>
     <div>
-      <a class="btn btn-primary" href="./issues" role="button">
-        View all issues
+      <a class="btn btn-primary" href="./snippets" role="button">
+        View all snippets
       </a>   
       <% if (typeof user==='undefined' ) { %>
         <a class="btn btn-primary" href="./users/login" role="button">
@@ -21,21 +21,21 @@
 <table class="table table-striped">
   <thead>
     <tr>
-      <h2>The three most recently added issues:</h2>
+      <h2>The three most recently added snippets:</h2>
     </tr>
   </thead>
   <tbody>
-    <% if (viewData?.issues?.length) { %>
+    <% if (viewData?.snippets?.length) { %>
       <% let counter = 0 %>
-      <% for (const issue of viewData.issues.reverse()) { %>
+      <% for (const snippet of viewData.snippets.reverse()) { %>
         <% if (counter === 3) break %>
         <tr>
-          <td class="w-100" id="issuetext-area">
-            <%= issue.issuetext %>
+          <td class="w-100" id="snippettext-area">
+            <%= snippet.snippettext %>
           </td>
           <td>
-            <a class="btn btn-primary" href="./issues" role="button">
-              View all issues
+            <a class="btn btn-primary" href="./snippets" role="button">
+              View all snippets
             </a>
           </td>
         </tr>
@@ -44,7 +44,7 @@
     <% } else { %>
       <tr>
         <td colspan="3" class="text-center text-danger">
-          There are no issues to display
+          There are no snippets to display
         </td>
       </tr>
     <% } %>

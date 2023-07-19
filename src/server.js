@@ -12,6 +12,7 @@ import logger from 'morgan'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { router } from './routes/router.js'
+import { connectDB } from './config/mongoose.js'
 import helmet from 'helmet'
 
 // Websocket support with Socket.io
@@ -19,6 +20,9 @@ import { Server } from 'socket.io'
 import { createServer } from 'node:http'
 
 try {
+  // Connect to MongoDB.
+  await connectDB()
+
   // Creates an Express application.
   const expressApp = express()
 
@@ -43,11 +47,24 @@ try {
     helmet.contentSecurityPolicy({
       directives: {
         defaultSrc: ["'self'", 'http://cscloud7-221.lnu.se', 'https://cscloud7-221.lnu.se'],
-        scriptSrc: ["'self'", 'http://cscloud7-221.lnu.se', 'https://cscloud7-221.lnu.se', 'https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js'],
-        styleSrc: ["'self' 'sha256-C10ckPX58XkzBNWy4e868LvAA4fm0QL2DtLaJ9RSRUg=' 'sha256-pOsDecCHeNhB9mZk/2O7+QXigySvqK5k2YS2NayMpOw='", 'http://cscloud7-221.lnu.se', 'https://cscloud7-221.lnu.se', 'https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css']
+        scriptSrc: ["'self'", 'gitlab.lnu.se', 'http://cscloud7-221.lnu.se', 'https://cscloud7-221.lnu.se', 'https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js'],
+        styleSrc: ["'self' 'sha256-C10ckPX58XkzBNWy4e868LvAA4fm0QL2DtLaJ9RSRUg=' 'sha256-pOsDecCHeNhB9mZk/2O7+QXigySvqK5k2YS2NayMpOw='", 'http://cscloud7-221.lnu.se', 'https://cscloud7-221.lnu.se', 'https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css'],
+        imgSrc: ["'self'", 'data:', 'gitlab.lnu.se', '*.gravatar.com']
+        // 'cross-origin-embedder-policy': 'require-corp',
+        // 'cross-origin-opener-policy': 'same-origin'
       }
     })
   )
+
+  // ! Still can't show the avatar...
+
+  // Sets "Cross-Origin-Embedder-Policy: require-corp"
+  // expressApp.use(helmet({ crossOriginEmbedderPolicy: true }))
+
+  // Sets "Cross-Origin-Embedder-Policy: credentialless"
+  // expressApp.use(helmet({ crossOriginEmbedderPolicy: { policy: 'credentialless' } }))
+
+  // expressApp.use(helmet.crossOriginEmbedderPolicy())
 
   // Get the directory name of this module's path.
   const directoryFullName = dirname(fileURLToPath(import.meta.url))
@@ -74,8 +91,8 @@ try {
 
   // Parse requests of the content type application/x-www-form-urlencoded.
   // Populates the request object with a body object (req.body).
-  // Takes the input from the user (the issue) that is sent to the server in a special format (application/x-www-form-urlencoded), and puts the data into req.body as an object with key value pairs
-  // Takes the inputted issue from the user and makes it available in the application
+  // Takes the input from the user (the snippet) that is sent to the server in a special format (application/x-www-form-urlencoded), and puts the data into req.body as an object with key value pairs
+  // Takes the inputted snippet from the user and makes it available in the application
   // extended:false is about which library this middleware should use
   expressApp.use(express.urlencoded({ extended: false }))
 

@@ -5,6 +5,8 @@
  * @version 1.0.0
  */
 
+import { Snippet } from '../models/snippet.js'
+
 /**
  * Encapsulates a controller.
  */
@@ -20,8 +22,8 @@ export class HomeController {
   async index (req, res, next) {
     try {
       const viewData = {
-        // issues: (await issue.find())
-        //   .map(issue => issue.toObject())
+        snippets: (await Snippet.find())
+          .map(snippet => snippet.toObject())
       }
       res.render('home/index', { viewData })
     } catch (error) {

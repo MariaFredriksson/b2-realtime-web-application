@@ -106,6 +106,16 @@ code {
   font-family: 'Consolas', 'Courier New', Courier, monospace
 }
 
-#issuetext-area {
+#snippettext-area {
   white-space: pre-wrap;
+}
+
+.btn-opened {
+  background-color: blue;
+  border-color: blue;
+}
+
+.btn-closed {
+  background-color: blueviolet;
+  border-color: blueviolet;
 }
