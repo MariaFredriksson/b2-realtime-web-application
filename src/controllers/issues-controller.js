@@ -138,37 +138,19 @@ export class IssuesController {
       })
 
       if (!response.ok) {
-        throw new Error(`Request failed with status ${response.status}`)
+        // Throw an error with an error message
+        throw new Error(`The issue could not be opened. Please try again later. ${response.status}`)
       }
 
-      console.log('Issue closed successfully.')
+      req.session.flash = { type: 'success', text: `Issue #${issueIid} was opened successfully.` }
 
       res.io.emit('issues/open', issueIid)
-
-      // const snippet = await Snippet.findById(req.params.id)
-
-      // if (snippet) {
-      //   snippet.snippettext = req.body.snippettext
-
-      //   await snippet.save()
-
-      //   req.session.flash = { type: 'success', text: 'The snippet was updated successfully.' }
-      // } else {
-      //   req.session.flash = {
-      //     type: 'danger',
-      //     text: 'The snippet you attempted to update was removed by another user after you got the original values.'
-      //   }
-      // }
-      // res.redirect('..')
 
       // Redirect back to the original page
       res.redirect('/issues')
     } catch (error) {
-      if (error.message.includes('is longer than the maximum allowed length (1000)')) {
-        error.message = 'The snippet is longer than the maximum allowed length (1000).'
-      }
       req.session.flash = { type: 'danger', text: error.message }
-      res.redirect('./update')
+      res.redirect('/issues')
     }
   }
 
