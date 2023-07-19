@@ -38,17 +38,10 @@ export class WebhooksController {
    */
   async indexPost (req, res, next) {
     try {
-      // Only interested in issues events. (But still, respond with a 200
-      // for events not supported.)
-      // let task = null
       let iid = null
+
+      // Only interested in issues events. (But still, respond with a 200 for events not supported.)
       if (req.body.event_type === 'issue') {
-        // task = new Task({
-        //   description: req.body.object_attributes.title
-        // })
-
-        // await task.save()
-
         // Extract the issue id from the webhook payload
         iid = req.body.object_attributes.iid
       }
@@ -56,11 +49,7 @@ export class WebhooksController {
       // It is important to respond quickly!
       res.status(200).end()
 
-      // Put this last because socket communication can take long time.
-      // if (task) {
-      //   res.io.emit('tasks/create', task.toObject())
-      // }
-
+      // If we have received something with an iid, we have most likely received an issue, and then we can emit an event.
       if (iid) {
         if (req.body.object_attributes.state === 'opened') {
           res.io.emit('issues/open', iid)
