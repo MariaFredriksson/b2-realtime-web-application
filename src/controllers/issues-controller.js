@@ -19,7 +19,6 @@ export class IssuesController {
    * @param {object} res - Express response object.
    * @param {Function} next - Express next middleware function.
    */
-  // This method is called when the url ends with just '/snippets'
   async index (req, res, next) {
     const token = process.env.PRIVATE_TOKEN
     const projectID = process.env.PROJECT_ID
@@ -51,7 +50,7 @@ export class IssuesController {
 
       this.#issues = extractedIssues
 
-      console.log(extractedIssues)
+      // console.log(extractedIssues)
 
       const viewData = {
         issues: extractedIssues
@@ -70,7 +69,8 @@ export class IssuesController {
    * @param {object} req - Express request object.
    * @param {object} res - Express response object.
    */
-  async closePost (req, res) {
+  // This is an arrow function so that the 'this' keyword is automatically inherited from the class
+  closePost = async (req, res) => {
     // TODO: Make this not copied
     const token = process.env.PRIVATE_TOKEN
     const projectID = process.env.PROJECT_ID
@@ -81,14 +81,7 @@ export class IssuesController {
     // const issue = this.#issues.find(issue => issue.iid === issueIid)
 
     try {
-      const response = await fetch(apiUrl, {
-        method: 'PUT',
-        headers: {
-          'PRIVATE-TOKEN': token,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ state_event: 'close' })
-      })
+      const response = await this.#fetchOpenCloseIssues(token, apiUrl, 'close')
 
       if (!response.ok) {
         // Throw an error with an error message
@@ -113,7 +106,7 @@ export class IssuesController {
    * @param {object} req - Express request object.
    * @param {object} res - Express response object.
    */
-  async openPost (req, res) {
+  openPost = async (req, res) => {
     // TODO: Make this not copied
     const token = process.env.PRIVATE_TOKEN
     const projectID = process.env.PROJECT_ID
@@ -121,14 +114,7 @@ export class IssuesController {
     const apiUrl = `https://gitlab.lnu.se/api/v4/projects/${projectID}/issues/${issueIid}`
 
     try {
-      const response = await fetch(apiUrl, {
-        method: 'PUT',
-        headers: {
-          'PRIVATE-TOKEN': token,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ state_event: 'reopen' })
-      })
+      const response = await this.#fetchOpenCloseIssues(token, apiUrl, 'reopen')
 
       if (!response.ok) {
         // Throw an error with an error message
@@ -145,5 +131,29 @@ export class IssuesController {
       req.session.flash = { type: 'danger', text: error.message }
       res.redirect('/issues')
     }
+  }
+
+  /**
+   * Makes a fetch request to open or close an issue.
+   *
+   * @param {string} token - The private token.
+   * @param {string} apiUrl - The url to the api.
+   * @param {string} action - The action to perform.
+   * @returns {Promise} - The response from the fetch request.
+   */
+  async #fetchOpenCloseIssues (token, apiUrl, action) {
+    // There is not try catch here because the try catch is in the methods that call this method, and any errors should propagate up to those methods
+
+    const response = await fetch(apiUrl, {
+      method: 'PUT',
+      headers: {
+        'PRIVATE-TOKEN': token,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ state_event: action })
+    })
+
+    console.log(response)
+    return response
   }
 }
