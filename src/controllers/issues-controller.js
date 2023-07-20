@@ -32,7 +32,7 @@ export class IssuesController {
   #apiUrl = `https://gitlab.lnu.se/api/v4/projects/${this.#projectID}/issues`
 
   /**
-   * Displays a list of snippets.
+   * Displays a list of issues.
    *
    * @param {object} req - Express request object.
    * @param {object} res - Express response object.
@@ -68,7 +68,7 @@ export class IssuesController {
         issues: extractedIssues
       }
 
-      // Tells which file (with sort of html code) to show to the user, and also sends the snippets - the viewData which is the array objects just created - so the snippets also can be shown to the user
+      // Tells which file (with sort of html code) to show to the user, and also sends the issues - the viewData which is the array objects just created - so the issues also can be shown to the user
       res.render('issues/index', { viewData })
     } catch (error) {
       next(error)
@@ -76,7 +76,7 @@ export class IssuesController {
   }
 
   /**
-   * Updates a specific snippet.
+   * Closes an issue.
    *
    * @param {object} req - Express request object.
    * @param {object} res - Express response object.
@@ -111,7 +111,7 @@ export class IssuesController {
   }
 
   /**
-   * Updates a specific snippet.
+   * Opens an issue.
    *
    * @param {object} req - Express request object.
    * @param {object} res - Express response object.

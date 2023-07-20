@@ -12,7 +12,6 @@ import logger from 'morgan'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { router } from './routes/router.js'
-import { connectDB } from './config/mongoose.js'
 import helmet from 'helmet'
 
 // Websocket support with Socket.io
@@ -20,9 +19,6 @@ import { Server } from 'socket.io'
 import { createServer } from 'node:http'
 
 try {
-  // Connect to MongoDB.
-  await connectDB()
-
   // Creates an Express application.
   const expressApp = express()
 
@@ -89,13 +85,6 @@ try {
   // Points out the path where to look for the default layout that will be used in all views
   expressApp.set('layout', join(directoryFullName, 'views', 'layouts', 'default'))
 
-  // Parse requests of the content type application/x-www-form-urlencoded.
-  // Populates the request object with a body object (req.body).
-  // Takes the input from the user (the snippet) that is sent to the server in a special format (application/x-www-form-urlencoded), and puts the data into req.body as an object with key value pairs
-  // Takes the inputted snippet from the user and makes it available in the application
-  // extended:false is about which library this middleware should use
-  expressApp.use(express.urlencoded({ extended: false }))
-
   // Webhook: Parse incoming requests with JSON payloads (application/json).
   // Populates the request object with a body object (req.body).
   expressApp.use(express.json())
@@ -125,12 +114,13 @@ try {
     sessionOptions.cookie.secure = true // serve secure cookies
   }
 
+  // ^^ Do I really have to have sessions...? (If I just delete it, the views can't get the baseUrl...)
   // Adds the session middleware to the express app, with the options that are in sessionOptions
   // When the session middleware is added to the Express application, it will automatically handle the creation and management of sessions for the application. This includes:
   // Generating a new session ID and storing the session data on the server when a new session is created.
   // Reading the session ID from the session ID cookie in the request and retrieving the corresponding session data from the server.
   // Updating the session data and the session ID cookie when the session data is modified.
-  // Also a property called session is addes to the req object
+  // Also a property called session is added to the req object
   expressApp.use(session(sessionOptions))
 
   // Middleware to be executed before the routes.

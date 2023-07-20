@@ -106,10 +106,6 @@ code {
   font-family: 'Consolas', 'Courier New', Courier, monospace
 }
 
-#snippettext-area {
-  white-space: pre-wrap;
-}
-
 .btn-opened {
   background-color: blue;
   border-color: blue;

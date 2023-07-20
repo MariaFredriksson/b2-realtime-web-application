@@ -6,47 +6,10 @@
     </h1>
     <br>
     <div>
-      <a class="btn btn-primary" href="./snippets" role="button">
-        View all snippets
-      </a>   
-      <% if (typeof user==='undefined' ) { %>
-        <a class="btn btn-primary" href="./users/login" role="button">
-          Log in
-        </a>
-      <% } %>
+      <a class="btn btn-primary" href="./issues" role="button">
+        Issues
+      </a>
     </div>
   </div>
 </div>
 <br>
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <h2>The three most recently added snippets:</h2>
-    </tr>
-  </thead>
-  <tbody>
-    <% if (viewData?.snippets?.length) { %>
-      <% let counter = 0 %>
-      <% for (const snippet of viewData.snippets.reverse()) { %>
-        <% if (counter === 3) break %>
-        <tr>
-          <td class="w-100" id="snippettext-area">
-            <%= snippet.snippettext %>
-          </td>
-          <td>
-            <a class="btn btn-primary" href="./snippets" role="button">
-              View all snippets
-            </a>
-          </td>
-        </tr>
-        <% counter++ %>
-      <% } %>
-    <% } else { %>
-      <tr>
-        <td colspan="3" class="text-center text-danger">
-          There are no snippets to display
-        </td>
-      </tr>
-    <% } %>
-  </tbody>
-</table>
