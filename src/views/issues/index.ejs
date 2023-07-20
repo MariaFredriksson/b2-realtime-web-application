@@ -14,9 +14,7 @@
       <% for (const issue of viewData.issues) { %>
         <tr data-id="<%= issue.iid %>">
           <td>
-            <% if (issue.ownerAvatar) { %>
-              <img src="<%= issue.ownerAvatar %>" alt="Owner Avatar" width="40" height="40">
-              <% } %>
+            <img src="<%= issue.ownerAvatar %>" alt="Owner Avatar" width="40" height="40">
           </td>
           <td>
             <%= issue.title %>
@@ -49,3 +47,27 @@
             <% } %>
   </tbody>
 </table>
+
+<%# Socket.IO: Template for the client. The same as above, sort of. %>
+<template id="issue-template">
+  <tr>
+    <td>
+      <img alt="Owner Avatar" width="40" height="40">
+    </td>
+    <td>
+      NEW_ISSUE_TITLE
+    </td>
+    <td>
+      NEW_ISSUE_DESCRIPTION
+    </td>
+    <td class="state-column">
+      NEW_ISSUE_STATE
+    </td>
+    <td class="state-btn-column">
+      <form method="POST">
+        <button type="submit" class="btn"></button>
+      </form>
+    </td>
+  </tr>
+</template>
+
