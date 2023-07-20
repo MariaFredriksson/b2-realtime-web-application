@@ -1,11 +1,12 @@
 import '../socket.io/socket.io.js'
 
 const issueList = document.querySelector('#issue-list')
+const baseURL = document.querySelector('base').getAttribute('href')
 
 // Only create a socket connection if there is an issue list on the page.
 if (issueList) {
   // Create a socket connection using Socket.IO.
-  const socket = window.io()
+  const socket = window.io({ path: `${baseURL}socket.io` })
 
   // Listen for "issues/close" message from the server.
   socket.on('issues/close', (issueIid) => changeIssueState('closed', issueIid))
