@@ -27,15 +27,8 @@ if (issueList) {
  * @param {number} issueIid The issue ID.
  */
 function changeIssueState (newState, issueIid) {
-  console.log('Hej!')
-
-  console.log(issueList)
-  console.log(issueIid)
-
   // Find the corresponding row in the table using the issueId
   const issueRow = issueList.querySelector(`[data-id="${issueIid}"]`)
-
-  console.log(issueRow)
 
   if (issueRow) {
     // Update the issue state in the table
@@ -73,8 +66,6 @@ function changeIssueState (newState, issueIid) {
 function createIssue (issue) {
   // Only add the issue if it already doesn't exist
   if (!issueList.querySelector(`[data-id="${issue.iid}"]`)) {
-    console.log(issue)
-
     const issueNode = document.querySelector('#issue-template').content.cloneNode(true)
 
     issueNode.querySelector('tr').setAttribute('data-id', issue.iid)
@@ -94,8 +85,6 @@ function updateIssue (issue) {
   const issueNode = issueList.querySelector(`[data-id="${issue.iid}"]`)
 
   if (issueNode) {
-    console.log(issue)
-
     // Update all the issue information, just because there isn't so much of it right now.
     updateNodeInfo(issueNode, issue)
   }

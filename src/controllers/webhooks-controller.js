@@ -36,7 +36,8 @@ export class WebhooksController {
    * @param {object} res - Express response object.
    * @param {Function} next - Express next middleware function.
    */
-  async indexPost (req, res, next) {
+  // Use arrow function to bind `this` to the class instance.
+  indexPost = async (req, res, next) => {
     try {
       let iid = null
 
@@ -51,8 +52,6 @@ export class WebhooksController {
 
       // If we have received something with an iid, we have most likely received an issue, and then we can emit an event.
       if (iid) {
-        // TODO: Add so that it can be detected in issue is created or if it is updated, and emit suitable events for that.
-
         // If the issue has action open, that means that it has been created
         if (req.body.object_attributes.action === 'open') {
           const issueInfo = this.#getIssueInfo(req.body)
@@ -85,7 +84,7 @@ export class WebhooksController {
    * @param {object} requestBody - The request body.
    * @returns {object} - The issue information.
    */
-  #getIssueInfo (requestBody) {
+  #getIssueInfo = (requestBody) => {
     const issueInfo = {
       title: requestBody.object_attributes.title,
       description: requestBody.object_attributes.description,

@@ -62,8 +62,6 @@ export class IssuesController {
         ownerAvatar: issue.author.avatar_url
       }))
 
-      // console.log(extractedIssues)
-
       const viewData = {
         issues: extractedIssues
       }
