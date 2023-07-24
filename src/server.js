@@ -37,8 +37,7 @@ try {
 
   expressApp.use(helmet())
 
-  // Allow bootstrap
-  // Copied from classmates Jimmy and Anja
+  // Tell helmet what should be allowed - like bootstrap and gravatar
   expressApp.use(
     helmet.contentSecurityPolicy({
       directives: {
@@ -46,32 +45,9 @@ try {
         scriptSrc: ["'self'", 'gitlab.lnu.se', 'http://cscloud7-221.lnu.se', 'https://cscloud7-221.lnu.se', 'https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js'],
         styleSrc: ["'self' 'sha256-C10ckPX58XkzBNWy4e868LvAA4fm0QL2DtLaJ9RSRUg=' 'sha256-pOsDecCHeNhB9mZk/2O7+QXigySvqK5k2YS2NayMpOw='", 'http://cscloud7-221.lnu.se', 'https://cscloud7-221.lnu.se', 'https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css'],
         imgSrc: ["'self'", 'data:', 'gitlab.lnu.se', '*.gravatar.com']
-        // 'cross-origin-embedder-policy': 'require-corp',
-        // 'cross-origin-opener-policy': 'same-origin'
       }
     })
   )
-
-  // expressApp.use(
-  //   helmet({
-  //     crossOriginEmbedderPolicy: false,
-  //     crossOriginResourcePolicy: false,
-  //     contentSecurityPolicy: {
-  //       directives: {
-  //         imgSrc: ["'self'", 'data:', 'gitlab.lnu.se']
-  //       }
-  //     }
-  //   }))
-
-  // ! Still can't show the avatar...
-
-  // Sets "Cross-Origin-Embedder-Policy: require-corp"
-  // expressApp.use(helmet({ crossOriginEmbedderPolicy: true }))
-
-  // Sets "Cross-Origin-Embedder-Policy: credentialless"
-  // expressApp.use(helmet({ crossOriginEmbedderPolicy: { policy: 'credentialless' } }))
-
-  // expressApp.use(helmet.crossOriginEmbedderPolicy())
 
   // Get the directory name of this module's path.
   const directoryFullName = dirname(fileURLToPath(import.meta.url))
