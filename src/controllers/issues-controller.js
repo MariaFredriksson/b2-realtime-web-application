@@ -101,10 +101,10 @@ export class IssuesController {
       // res.io.emit('issues/close', issueIid)
 
       // Redirect back to the original page
-      res.redirect('/issues')
+      res.redirect('..')
     } catch (error) {
       req.session.flash = { type: 'danger', text: error.message }
-      res.redirect('/issues')
+      res.redirect('..')
     }
   }
 
@@ -132,10 +132,10 @@ export class IssuesController {
       // res.io.emit('issues/open', issueIid)
 
       // Redirect back to the original page
-      res.redirect('/issues')
+      res.redirect('..')
     } catch (error) {
       req.session.flash = { type: 'danger', text: error.message }
-      res.redirect('/issues')
+      res.redirect('..')
     }
   }
 

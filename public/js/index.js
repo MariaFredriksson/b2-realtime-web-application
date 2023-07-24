@@ -41,7 +41,7 @@ function changeIssueState (newState, issueIid) {
 
     if (newState === 'closed') {
       // Change the form action
-      form.action = `/issues/${issueIid}/open`
+      form.action = `./issues/${issueIid}/open`
 
       // Change the button text and class
       button.textContent = 'Open issue'
@@ -49,7 +49,7 @@ function changeIssueState (newState, issueIid) {
       button.classList.add('btn-secondary', 'btn-closed')
     } else {
       // Change the form action
-      form.action = `/issues/${issueIid}/close`
+      form.action = `./issues/${issueIid}/close`
 
       // Change the button text and class
       button.textContent = 'Close issue'
@@ -106,11 +106,11 @@ function updateNodeInfo (node, issue) {
   stateCell.textContent = issue.state
 
   if (issue.state === 'opened') {
-    stateBtnCell.querySelector('form').action = `/issues/${issue.iid}/close`
+    stateBtnCell.querySelector('form').action = `./issues/${issue.iid}/close`
     stateBtnCell.querySelector('button').textContent = 'Close issue'
     stateBtnCell.querySelector('button').classList.add('btn-primary', 'btn-opened')
   } else {
-    stateBtnCell.querySelector('form').action = `/issues/${issue.iid}/open`
+    stateBtnCell.querySelector('form').action = `./issues/${issue.iid}/open`
     stateBtnCell.querySelector('button').textContent = 'Open issue'
     stateBtnCell.querySelector('button').classList.add('btn-secondary', 'btn-closed')
   }
