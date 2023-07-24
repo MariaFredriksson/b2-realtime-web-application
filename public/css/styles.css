@@ -106,6 +106,12 @@ code {
   font-family: 'Consolas', 'Courier New', Courier, monospace
 }
 
+.user-img {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+}
+
 .btn-opened {
   background-color: blue;
   border-color: blue;
