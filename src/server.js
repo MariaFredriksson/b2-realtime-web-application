@@ -52,6 +52,17 @@ try {
     })
   )
 
+  // expressApp.use(
+  //   helmet({
+  //     crossOriginEmbedderPolicy: false,
+  //     crossOriginResourcePolicy: false,
+  //     contentSecurityPolicy: {
+  //       directives: {
+  //         imgSrc: ["'self'", 'data:', 'gitlab.lnu.se']
+  //       }
+  //     }
+  //   }))
+
   // ! Still can't show the avatar...
 
   // Sets "Cross-Origin-Embedder-Policy: require-corp"
